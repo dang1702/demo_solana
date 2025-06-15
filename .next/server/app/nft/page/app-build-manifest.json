@@ -1,0 +1,30 @@
+{
+  "pages": {
+    "/nft/page": [
+      "static/chunks/c8b9a_next_dist_16af482c._.js",
+      "static/chunks/src_app_favicon_ico_mjs_f254aa0f._.js",
+      "static/chunks/_e6940d25._.css",
+      "static/chunks/904b9_@solana_wallet-adapter-react-ui_lib_esm_index_e6e91431.js",
+      "static/chunks/src_62a2b04e._.js",
+      "static/chunks/060e6_@tanstack_query-core_build_modern_cb4aec81._.js",
+      "static/chunks/b4b5b_@noble_hashes_1f9fae66._.js",
+      "static/chunks/4e570_@noble_curves_5e794f40._.js",
+      "static/chunks/7c6f5_@solana_web3_js_lib_index_browser_esm_4cf77855.js",
+      "static/chunks/61529_pako_dist_pako_esm_mjs_5e8a2e1f._.js",
+      "static/chunks/8b5e6_@coral-xyz_anchor_dist_browser_index_73d6d93d.js",
+      "static/chunks/8484d_tailwind-merge_dist_bundle-mjs_mjs_4d8e7d9e._.js",
+      "static/chunks/node_modules__pnpm_87805545._.js",
+      "static/chunks/src_app_layout_tsx_28500d5e._.js",
+      "static/chunks/node_modules__pnpm_f2e23609._.js",
+      "static/chunks/src_9532317d._.js",
+      "static/chunks/src_app_nft_page_tsx_f573ffbb._.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_534b0c1d._.js",
+      "static/chunks/c8b9a_next_dist_compiled_6eecdb85._.js",
+      "static/chunks/c8b9a_next_dist_client_08a34cf2._.js",
+      "static/chunks/c8b9a_next_dist_3f8f7b83._.js",
+      "static/chunks/61dca_@swc_helpers_cjs_e27e0aca._.js",
+      "static/chunks/_e69f0d32._.js",
+      "static/chunks/_f6771bb1._.js"
+    ]
+  }
+}

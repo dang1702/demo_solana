@@ -1,0 +1,100 @@
+'use client'
+
+import { useAnchorProvider } from '../solana/solana-provider'
+import { useWallet } from '@solana/wallet-adapter-react'
+import { Connection, PublicKey, Transaction, SystemProgram, Keypair } from '@solana/web3.js'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  TOKEN_PROGRAM_ID,
+  createInitializeMintInstruction,
+  getAssociatedTokenAddress,
+  createAssociatedTokenAccountInstruction,
+  createMintToInstruction,
+} from '@solana/spl-token'
+
+export function useNftProgram() {
+  const provider = useAnchorProvider()
+  const { connection } = provider
+  return { connection }
+}
+
+export function useMintNft() {
+  const { connection } = useNftProgram()
+  const wallet = useWallet()
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationKey: ['mint-nft'],
+    mutationFn: async (input: { name: string; symbol: string; description: string; image: string }) => {
+      if (!wallet.publicKey || !wallet.sendTransaction) throw new Error('Wallet not connected')
+
+      // 1. Generate a new Keypair for the mint
+      const mint = Keypair.generate()
+
+      // 2. Calculate rent for mint account
+      const lamports = await connection.getMinimumBalanceForRentExemption(82)
+
+      // 3. Build instructions
+      const createMintAccountIx = SystemProgram.createAccount({
+        fromPubkey: wallet.publicKey,
+        newAccountPubkey: mint.publicKey,
+        space: 82,
+        lamports,
+        programId: TOKEN_PROGRAM_ID,
+      })
+      const initMintIx = createInitializeMintInstruction(
+        mint.publicKey,
+        0,
+        wallet.publicKey,
+        wallet.publicKey
+      )
+      const ata = await getAssociatedTokenAddress(mint.publicKey, wallet.publicKey)
+      const createAtaIx = createAssociatedTokenAccountInstruction(
+        wallet.publicKey,
+        ata,
+        wallet.publicKey,
+        mint.publicKey
+      )
+      const mintToIx = createMintToInstruction(
+        mint.publicKey,
+        ata,
+        wallet.publicKey,
+        1
+      )
+
+      // 4. Build transaction
+      const tx = new Transaction().add(
+        createMintAccountIx,
+        initMintIx,
+        createAtaIx,
+        mintToIx
+      )
+
+      // 5. Send transaction (mint is a signer)
+      const signature = await wallet.sendTransaction(tx, connection, { signers: [mint] })
+      await connection.confirmTransaction(signature)
+
+      return { mint: mint.publicKey.toString(), tokenAccount: ata.toString() }
+    },
+    onSuccess: () => {
+      client.invalidateQueries({ queryKey: ['nfts'] })
+    },
+  })
+}
+
+export function useGetNfts() {
+  const { connection } = useNftProgram()
+  const wallet = useWallet()
+
+  return useQuery({
+    queryKey: ['nfts', wallet.publicKey?.toString()],
+    queryFn: async () => {
+      if (!wallet.publicKey) return []
+      const tokenAccounts = await connection.getParsedTokenAccountsByOwner(wallet.publicKey, {
+        programId: new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'),
+      })
+      return tokenAccounts.value
+    },
+    enabled: !!wallet.publicKey,
+  })
+} 
