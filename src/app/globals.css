@@ -74,6 +74,12 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --color-cyan: #00f0ff;        /* Neon cyan */
+  --color-purple: #b047f7;      /* Tím hồng rực */
+  --color-indigo: #6366f1;      /* Xanh chàm */
+  --color-dark-bg: #0b0f1a;     /* Nền chính */
+  --color-text-light: #e0e0ff;  /* Text phụ trợ */
+  --color-border-glow: #00f0ff; /* Cho border hiệu ứng neon */
 }
 
 .dark {
