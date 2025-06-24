@@ -1,22 +1,30 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
-  webpack: (config) => {
-    config.resolve.fallback = {
-      ...config.resolve.fallback,
-      fs: false,
-      net: false,
-      tls: false,
-      crypto: require.resolve('crypto-browserify'),
-      stream: require.resolve('stream-browserify'),
-      url: require.resolve('url'),
-      zlib: require.resolve('browserify-zlib'),
-      http: require.resolve('stream-http'),
-      https: require.resolve('https-browserify'),
-      assert: require.resolve('assert'),
-      os: require.resolve('os-browserify'),
-      path: require.resolve('path-browserify'),
-      'process/browser': require.resolve('process/browser'),
+import type { NextConfig } from 'next'
+import { ProvidePlugin } from 'webpack'
+import { Configuration } from 'webpack'
+
+const nextConfig: NextConfig = {
+  webpack: (config: Configuration) => {
+    config.resolve = {
+      ...(config.resolve || {}),
+      fallback: {
+        ...(config.resolve?.fallback || {}),
+        crypto: require.resolve('crypto-browserify'),
+        stream: require.resolve('stream-browserify'),
+        assert: require.resolve('assert'),
+        buffer: require.resolve('buffer'),
+        process: require.resolve('process/browser'),
+        util: require.resolve('util/'),
+      },
     }
+
+    config.plugins = [
+      ...(config.plugins || []),
+      new ProvidePlugin({
+        Buffer: ['buffer', 'Buffer'],
+        process: ['process'],
+      }),
+    ]
+
     return config
   },
 }
