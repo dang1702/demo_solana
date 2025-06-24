@@ -1,12 +1,10 @@
 import { useAnchorProvider } from '../solana/solana-provider'
 import { useWallet } from '@solana/wallet-adapter-react'
 import {
-  Connection,
   PublicKey,
   Transaction,
   SystemProgram,
   Keypair,
-  sendAndConfirmTransaction,
 } from '@solana/web3.js'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
