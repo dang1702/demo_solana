@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { useWallet } from '@solana/wallet-adapter-react'
 import { useMintNft, useGetNfts } from './nft-data-access'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
